@@ -120,7 +120,7 @@ body{ margin:0; color:var(--text); font:14px/1.5 system-ui,-apple-system,"Segoe 
     grid-template-areas:"toggle logo actions";
     gap:14px; margin-left: 0;
   }
-  .logo{ justify-self:center }
+  .logo{ justify-self:center; margin-left: 80px;}
   .hamburger{ display:flex } /* 왼쪽에 보이도록 */
 
   /* 오프캔버스 내비 (왼쪽에서 슬라이드) */
@@ -157,9 +157,10 @@ body{ margin:0; color:var(--text); font:14px/1.5 system-ui,-apple-system,"Segoe 
   /* 검색 박스/아이콘 살짝 컴팩트 */
   .actions{ gap:8px }
   .icon-btn{ width:34px; height:34px }
+  .search{display: none;}
   .search input{ width:150px }
 
-  /* 메가메뉴는 모바일에서 숨김 */
+  /* 메가메뉴는 모바일에서 숨김 */   
   .category-panel{ display:none }
 }
 

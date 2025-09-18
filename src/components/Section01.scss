@@ -8,7 +8,7 @@
 .sec01-grid{
   display:grid;
   grid-template-columns: 320px 1fr; /* 왼쪽 고정, 오른쪽 유동 */
-  gap: 80px; align-items:start; margin-top: 10px;
+  gap: 80px; align-items:start; 
 
   @media (max-width: 980px){
     grid-template-columns: 1fr;
@@ -21,7 +21,7 @@
   width:100%; height:560px;
   /* border-radius:12px; */ overflow:hidden;
   box-shadow:0 6px 16px rgba(0,0,0,.06);
-  margin-top: 30px;
+  margin-top: 60px;
 
   .swiper-wrapper{ align-items:stretch; }
   .swiper-slide{ height:auto; }
