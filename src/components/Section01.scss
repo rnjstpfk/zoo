@@ -1,0 +1,143 @@
+:root{
+  --container: 1200px;
+  --text:#111; --muted:#777; --line:rgba(0,0,0,.08);
+}
+.container{ max-width:var(--container); margin:0 auto; padding:0 20px; }
+
+/* GRID */
+.sec01-grid{
+  display:grid;
+  grid-template-columns: 320px 1fr; /* 왼쪽 고정, 오른쪽 유동 */
+  gap: 80px; align-items:start; margin-top: 10px;
+
+  @media (max-width: 980px){
+    grid-template-columns: 1fr;
+  }   
+}
+
+/* ===== LEFT: 배너 ===== */ 
+.left-banner{ position:relative; }
+.banner-swiper{
+  width:100%; height:560px;
+  /* border-radius:12px; */ overflow:hidden;
+  box-shadow:0 6px 16px rgba(0,0,0,.06);
+  margin-top: 30px;
+
+  .swiper-wrapper{ align-items:stretch; }
+  .swiper-slide{ height:auto; }
+
+  img{ width:100%; height:100%; object-fit:cover; display:block; }
+}
+
+/* 하단 커스텀 컨트롤(버튼 + 01|03) */
+.banner-bottom{
+  position:absolute; left:18px; right:18px; bottom:28px;
+  display:flex; align-items:center; justify-content:center;
+  gap:0px; color:#fff; z-index:3; user-select:none;
+}
+.bb-nav{
+  width:28px; height:28px; display:flex; align-items:center; justify-content:center;
+  border:none; border-radius:50%;
+  background:none; color:#fff; font-size:16px; line-height:1;
+  cursor:pointer; transition:background .2s, transform .1s;
+  &:active{ transform:scale(.96); }
+}
+.bb-fraction{
+  font-weight:700; letter-spacing:.08em;
+  text-shadow:0 1px 2px rgba(0,0,0,.35);
+}
+.bb-fraction .sep{ opacity:.9; margin:0 4px; }
+
+
+/* 하단 전체 길이 진행바 */
+.bb-track{
+  position:absolute;
+  left:18px; 
+  right:18px; 
+  bottom:8px;         /* 👈 fraction보다 조금 아래 */
+  height:3px;
+  background:rgba(255,255,255,.35);
+  border-radius:3px;
+  overflow:hidden;
+  z-index: 4;         /* 👈 버튼/텍스트 뒤에 깔리지 않게 */
+}
+.bb-bar{
+  height:100%;
+  width:0%;
+  background:#fff;
+  transition:width .35s ease;
+}
+
+
+/* ===== RIGHT ===== */
+.right{ min-width: 0; } /* grid 자식 너비 0 이슈 방지 */
+
+.cat-strip{
+  display:flex; gap:10px; flex-wrap:wrap;
+  list-style:none; padding:0; margin:4px 0 14px;
+}
+.cat{
+  display:flex; flex-direction:column; align-items:center; gap:6px;
+  background:#fff; border:none; border-radius:10px; padding:8px 10px;
+  cursor:pointer; min-width:56px;
+  img{ width:60px; height:60px; object-fit:cover; /* border-radius:8px; */ display:block; }
+  span{ font-size:11px; color:#666; letter-spacing:.2px; }
+  &:hover{ transform:translateY(-2px); box-shadow:0 8px 18px rgba(0,0,0,.06); transition:.15s; }
+}
+
+.sec-title{ margin: 6px 0 16px; font-size:20px; font-weight:800; letter-spacing:.2px; }
+
+/* ▶ 상품 슬라이더 컨테이너 */
+.product-carousel{ position:relative; margin-top: 6px; }
+.hori-swiper{
+  .swiper-wrapper{ align-items:stretch; }
+  .swiper-slide{ height:auto; }
+  min-height: 360px; width: 100%;
+}
+
+/* ▶ 좌/우 화살표 */
+.product-carousel .swiper-button-prev,
+.product-carousel .swiper-button-next{
+  position:absolute; top: 50%; transform: translateY(-50%);
+  width:34px; height:34px; border-radius:50%;
+  background:#fff; border:1px solid var(--line);
+  box-shadow:0 6px 18px rgba(0,0,0,.06); z-index:5;
+  &:after{ font-size:14px; color:#333; }
+}
+.product-carousel .swiper-button-prev{ left: -12px; }
+.product-carousel .swiper-button-next{ right: -12px; }
+
+/* ▶ 카드 디자인 */
+.card{
+  background:#fff; border:1px solid var(--line);
+  border-radius:12px; overflow:hidden; min-height: 330px;
+  display:flex; flex-direction:column;
+  transition:transform .15s ease, box-shadow .15s ease;
+
+  &:hover{ transform:translateY(-3px); box-shadow:0 10px 22px rgba(0,0,0,.08); }
+
+  .thumb{
+    position:relative; aspect-ratio: 4/3; background:#f7f7f7; width:100%;
+    img{ width:100%; height:100%; object-fit:cover; display:block; }
+    .badge{
+      position:absolute; left:12px; bottom:12px;
+      background:#9b9b9b; color:#fff; font-size:12px;
+      padding:6px 8px; border-radius:8px;
+    }
+  }
+
+  .meta{ padding:12px 14px 16px; color:var(--text); }
+  .price{
+    display:flex; align-items:baseline; gap:8px; margin-bottom:6px;
+    .sale{ color:#e60023; font-weight:800; font-size:14px; }
+    .now{ font-size:15px; }
+    .base{ color:#bbb; font-size:12px; }
+  }
+  .name{ margin:0 0 6px; font-size:13px; }
+  .etc{ margin:0; color:var(--muted); font-size:12px; }
+}
+
+@media (max-width: 980px){
+  .product-carousel .swiper-button-prev{ left:6px; }
+  .product-carousel .swiper-button-next{ right:6px; }
+}
