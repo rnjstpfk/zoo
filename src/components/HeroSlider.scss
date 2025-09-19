@@ -1,16 +1,21 @@
 /* src/components/HeroSlider.scss */
 .hero-slider {
-  /* 화면 가로 전체 */
-  width: 100vw;
-  margin-left: 50%;
-  transform: translateX(-50%); /* 컨테이너가 중앙일 때도 100vw로 꽉 차게 */
+  /* ===== 풀블리드(가로 100%) =====
+     transform 대신 margin-left calc 해킹을 쓰면 가로 스크롤 이슈가 줄어듭니다. */
+  position: relative;
+  width: calc(100vw - (100vw - 100%)); /* 스크롤바 폭 보정 */
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
 
+  /* ===== 높이: 화면 비율에 따라 유동 ===== */
   .hero-swiper,
   .hero-swiper .swiper-wrapper,
   .hero-swiper .swiper-slide {
-    height: clamp(420px, 72vh, 760px); /* 화면 비율에 맞춰 유동 */
+    /* 데스크톱 기본 */
+    height: clamp(420px, 72vh, 760px);
   }
 
+  /* 백그라운드 이미지 + 그라디언트 */
   .slide-bg {
     position: absolute; inset: 0;
     img {
@@ -20,59 +25,105 @@
     }
     .overlay {
       position: absolute; inset: 0;
-      /* 좌측 텍스트 가독성을 위한 은은한 그라디언트 */
       background: linear-gradient(90deg, rgba(0,0,0,.25), rgba(0,0,0,0) 50%);
       pointer-events: none;
     }
   }
 
+  /* 카피 영역(텍스트) */
   .hero-copy {
-    position: relative;
-    z-index: 2;
-    height: 100%;
-    max-width: 1280px;
-    margin: 0 auto;
+    position: relative; z-index: 2; height: 100%;
+    max-width: 1280px; margin: 0 auto;
     padding: clamp(16px, 3vw, 32px);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    padding-left: max(clamp(16px, 3vw, 32px), env(safe-area-inset-left));
+    padding-right: max(clamp(16px, 3vw, 32px), env(safe-area-inset-right));
+    display: flex; flex-direction: column; justify-content: center;
 
-    .kicker {
-      color: #eaf3ff;
-      opacity: .95;
+    .kicker{
+      color:#eaf3ff; opacity:.95; margin:0 0 .4em;
       font-size: clamp(14px, 2.1vw, 20px);
-      margin: 0 0 .4em;
-      letter-spacing: .02em;
+      letter-spacing:.02em;
     }
-
-    .title {
-      color: #e7f1ff;
-      font-weight: 700;
+    .title{
+      color:#e7f1ff; font-weight:700; margin:0; line-height:1.15;
+      text-shadow:0 2px 12px rgba(0,0,0,.22);
       font-size: clamp(28px, 5.2vw, 56px);
-      line-height: 1.15;
-      margin: 0;
-      text-shadow: 0 2px 12px rgba(0,0,0,.22);
+      max-width: 22ch; /* 너무 길어지지 않게 */
     }
   }
 
-  /* 네비게이션 / 페이지네이션 스타일 살짝 정리 */
+  /* ===== Swiper 네비/페이지네이션 ===== */
   .swiper-button-prev,
-  .swiper-button-next {
-    color: #fff;
-    text-shadow: 0 2px 8px rgba(0,0,0,.35);
-    width: 44px; height: 44px;
-  }
-  .swiper-pagination-bullet {
-    background: rgba(255,255,255,.7);
-    opacity: 1;
-  }
-  .swiper-pagination-bullet-active {
-    background: #fff;
+  .swiper-button-next{
+    color:#fff; text-shadow:0 2px 8px rgba(0,0,0,.35);
+    width:44px; height:44px;
   }
 
-  @media (max-width: 768px) {
-    .overlay {
+  .swiper-pagination{
+    bottom: clamp(10px, 2.4vh, 24px) !important;
+  }
+  .swiper-pagination-bullet{
+    background: rgba(255,255,255,.7); opacity:1;
+  }
+  .swiper-pagination-bullet-active{ background:#fff; }
+
+  /* ====== 태블릿(≤1024px) ====== */
+  @media (max-width: 1024px){
+    .hero-swiper,
+    .hero-swiper .swiper-wrapper,
+    .hero-swiper .swiper-slide{
+      height: clamp(380px, 64vh, 680px);
+    }
+    .hero-copy .title{ max-width: 26ch; }
+    .swiper-button-prev, .swiper-button-next{ width:40px; height:40px; }
+  }
+
+  /* ====== 모바일(≤768px) ====== */
+  @media (max-width: 768px){
+    .hero-swiper,
+    .hero-swiper .swiper-wrapper,
+    .hero-swiper .swiper-slide{
+      height: clamp(300px, 56svh, 520px); /* svh: 모바일 주소창 대응 */
+    }
+
+    .slide-bg .overlay{
       background: linear-gradient(90deg, rgba(0,0,0,.35), rgba(0,0,0,0) 60%);
     }
+
+    .hero-copy{
+      /* 작은 화면에서는 중앙 정렬이 더 자연스러움 */
+      align-items: flex-start;
+      .kicker{ font-size: clamp(13px, 3.4vw, 16px); }
+      .title{
+        font-size: clamp(22px, 7vw, 34px);
+        line-height: 1.2;
+        max-width: 28ch;
+      }
+    }
+
+    .swiper-button-prev, .swiper-button-next{
+      width:34px; height:34px;
+    }
+    .swiper-pagination{ bottom: 12px !important; }
+  }
+
+  /* ====== 초소형(≤420px) ====== */
+  @media (max-width: 420px){
+    .hero-swiper,
+    .hero-swiper .swiper-wrapper,
+    .hero-swiper .swiper-slide{
+      height: clamp(260px, 52svh, 420px);
+    }
+    .hero-copy{
+      padding: 12px 16px;
+      .title{ font-size: clamp(20px, 7.6vw, 30px); }
+    }
+    /* 버튼이 사진을 가리는 경우 살짝 숨김 */
+    .swiper-button-prev, .swiper-button-next{ display:none; }
+  }
+
+  /* ====== 모션 최소화 선호 ====== */
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:none !important; }
   }
 }

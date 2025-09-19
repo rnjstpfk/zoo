@@ -112,11 +112,12 @@ export default function CollectionGrid() {
 
             <div className="more-wrap">
                 {visible < PRODUCTS.length ? (
-                    <button className="more" onClick={loadMore}>MORE + </button>
+                    <a href="/collection/page2" className="more">MORE +</a>
                 ) : (
                     <button className="more" disabled>NO MORE</button>
                 )}
             </div>
+
         </section>
     );
 }

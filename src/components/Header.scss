@@ -69,7 +69,7 @@ body{ margin:0; color:var(--text); font:14px/1.5 system-ui,-apple-system,"Segoe 
 .search-wrap{ position:relative }
 .search{
   display:flex; align-items:center; gap:8px; padding:6px 10px 6px 12px;
-  background:var(--pill); border-radius:999px; border:1px solid transparent;
+  background: #E6E6E6; border-radius:999px; border:1px solid transparent;
 }
 .search:focus-within{ border-color:#ddd; background:#fff }
 .search input{ width:210px; border:0; outline:0; background:transparent; font-size:13px }
@@ -78,7 +78,7 @@ body{ margin:0; color:var(--text); font:14px/1.5 system-ui,-apple-system,"Segoe 
 .icon-img{ width:18px; height:18px; display:block; object-fit:contain }
 
 /* ===== 검색 패널 ===== */
-.search-panel{ position:absolute; right:-36px; top:calc(100% + 11px); width:360px; background:#fff; border:1px solid var(--line); border-radius:12px; box-shadow:0 8px 30px rgba(0,0,0,.08); padding:16px; z-index:30 }
+.search-panel{ position:absolute; right:-36px; top:calc(100% + 11px); width:360px; background:#fff; border:1px solid #E6E6E6; border-radius:12px; box-shadow:0 8px 30px rgba(3,5,4,.17); padding:16px; z-index:30 }
 .search-panel .banner{ height:96px; background:#ddd; border-radius:8px; display:flex; align-items:center; justify-content:center; margin-bottom:12px; font-size:14px; color:#333 }
 .search-panel h4{ margin:0 0 10px; font-size:15px }
 .search-panel .keywords{ display:grid; grid-template-columns:1fr 1fr; gap:8px }

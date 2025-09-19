@@ -1,0 +1,313 @@
+:root{
+  --text:#222;
+  --muted:#777;
+  --line:rgba(0,0,0,.08);
+  --container:1200px;
+  --pill:#f6f7f9;
+  --marquee-duration: 36s;  /* 마키 속도 */
+  --blur: 10px;
+  --shadow: 0 16px 40px rgba(0,0,0,.05);
+  --ease: cubic-bezier(.22,.61,.36,1);
+}
+
+*{ box-sizing:border-box }
+body{ margin:0; font:14px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial; color:var(--text) }
+
+/* 컨테이너 */
+.container{ max-width:var(--container); margin:0 auto; padding:0 20px }
+
+/* ===== 상단 텍스트 마키 (무한루프) ===== */
+.bh-topstrip{ background:#fff; overflow:hidden; border-top:1px solid var(--line); border-bottom:1px solid var(--line) }
+.bh-marquee{ position:relative; width:100%; overflow:hidden }
+.bh-track{ display:flex; width:max-content; animation:bh-marquee var(--marquee-duration) linear infinite; will-change:transform }
+.bh-seq{ display:flex; gap:60px; padding:8px 20px }
+.bh-seq > span{ color:#9aa0a6; font-weight:600; letter-spacing:.04em; white-space:nowrap }
+@keyframes bh-marquee{ to { transform:translateX(-50%) } }
+@media (prefers-reduced-motion: reduce){ .bh-track{ animation:none } }
+
+/* ===== 로고/유틸 바 ===== */
+.bh-bar{ height:200px; display:grid; grid-template-columns:1fr auto 1fr; align-items:center }
+.bh-logo img{ display:block; height:40px; width:auto; margin-top:40px }
+.bh-left{ margin-left:-300px; margin-bottom:100px }
+
+/* 오른쪽 유틸/아이콘 */
+.bh-right{
+  justify-self:end; display:grid; grid-template-rows:auto auto;
+  justify-items:end; justify-content:end; row-gap:35px; column-gap:14px;
+  margin-right:-300px; margin-bottom:100px
+}
+.bh-util, .bh-ask{ grid-row:1 }
+.bh-icon1{ grid-row:2; grid-column-start:2 }
+.bh-icon2{ grid-row:2; grid-column-start:3 }
+.bh-icon3{ grid-row:2; grid-column-start:4 }
+.bh-util{ text-decoration:none; color:var(--muted); font-size:13px }
+.bh-util:hover{ color:var(--text) }
+
+/* ask */
+.bh-ask{ position:relative }
+.bh-ask-btn{ display:flex; align-items:center; gap:6px; border:0; background:transparent; cursor:pointer; color:var(--muted); font-size:13px; padding:4px 2px }
+.bh-ask-btn:hover{ color:var(--text) }
+.bh-caret{ margin-left:6px; width:14px; height:14px; transition:transform .18s ease; vertical-align:-1px; opacity:.7 }
+.bh-caret.open{ transform:rotate(180deg) }
+.bh-ask-menu{ position:absolute; right:0; top:calc(100% + 8px); background:#fff; border:1px solid #000; box-shadow:0 12px 30px rgba(0,0,0,.08); min-width:90px; padding:6px; z-index:30; text-align:center }
+.bh-ask-item{ display:block; padding:9px 10px; border-radius:6px; text-decoration:none; color:var(--text); font-size:13px }
+.bh-ask-item:hover{ background:var(--pill) }
+
+/* 아이콘 공통 */
+.bh-right img{ width:20px; height:20px; display:block; object-fit:contain; opacity:.85 }
+.bh-right a:hover img{ opacity:1 }
+
+/* ===== 메인 내비 (데스크톱 유지) ===== */
+.bh-nav{ position:relative; border-bottom:1px solid var(--line) }
+.bh-nav-inner{ display:grid; grid-template-columns:auto 1fr auto; align-items:center; }
+.bh-menu{ list-style:none; margin:0 auto; padding:0 20px; height:48px; display:flex; align-items:center; justify-content:center; gap:26px }
+.bh-item{ position:relative }
+.bh-link{ display:block; padding:8px 10px; font-size:13px; color:#444; text-decoration:none }
+.bh-link:hover{ color:#000 }
+.bh-dropdown{ position:absolute; left:50%; transform:translateX(-50%); top:calc(100% + 4px); min-width:120px; background:#fff; border:1px solid var(--line); padding:8px; opacity:0; pointer-events:none; transition:opacity .18s ease, transform .18s ease; text-align:center; z-index:20 }
+.bh-item:hover .bh-dropdown, .bh-dropdown:hover{ opacity:1; pointer-events:auto }
+.bh-item::before{ content:""; position:absolute; left:0; right:0; top:100%; height:6px }
+.bh-drop-link{ display:block; padding:10px 14px; border-radius:8px; color:var(--text); text-decoration:none; font-size:13px }
+.bh-drop-link:hover{ background:var(--pill) }
+.bh-item:hover::after{ content:""; position:absolute; left:50%; transform:translateX(-50%); top:100%; width:44px; height:3px; background:#111; border-radius:2px }
+
+/* ===== 검색 오버레이 (윗쪽 절반만 덮음) ===== */
+.bh-ol{ position:fixed; inset:0; z-index:999; display:none; pointer-events:none }
+.bh-ol.open{ display:block }
+.bh-ol-bg{
+  position:absolute; left:0; top:0; width:100%; height:50vh;
+  background:rgba(255,255,255,.5);
+  backdrop-filter:saturate(120%) blur(1.5px);
+  pointer-events:auto;
+}
+.bh-ol-center{
+  position:absolute; left:50%; top:25vh; transform:translate(-50%,-50%);
+  width:min(520px, 90vw);
+  background:#fff; border-radius:12px;
+  padding:16px 16px 18px 16px; box-shadow:0 10px 30px rgba(0,0,0,.12);
+  pointer-events:auto;
+}
+.bh-ol-input{
+  width:100%; border:0; border-bottom:2px solid #333;
+  background:transparent; outline:0; font-size:18px; padding:8px 4px 10px 4px; color:#222;
+}
+.bh-ol-close{ position:absolute; right:8px; top:8px; border:0; background:transparent; width:28px; height:28px; cursor:pointer; display:flex; align-items:center; justify-content:center }
+.bh-ol-close svg{ width:18px; height:18px; stroke:#444 }
+
+/* =========================
+   반응형
+   ========================= */
+
+/* ① 큰 데스크톱 ↓ (≤ 1280px) */
+@media (max-width:1280px){
+  .container{ padding:0 16px }
+  .bh-seq{ gap:44px }
+  .bh-left{ margin-left:-160px }
+  .bh-right{ margin-right:-160px }
+  .bh-bar{ height:170px }
+}
+
+/* ② 태블릿 가로 ↓ (≤ 1024px) */
+@media (max-width:1024px){
+  :root{ --marquee-duration: 32s; }
+  .bh-left{ margin-left:0; margin-bottom:0 }
+  .bh-right{ margin-right:0; margin-bottom:0; row-gap:18px }
+  .bh-bar{ height:150px }
+  .bh-logo img{ margin-top:24px; height:36px }
+  .bh-menu{ gap:18px }
+}
+
+/* ③ 태블릿 세로 ↓ (≤ 820px): 우측 유틸 축소 */
+@media (max-width:820px){
+  .bh-bar{
+    height:130px;
+    grid-template-columns:auto 1fr auto;
+  }
+  .bh-left{ display:none }
+  .bh-logo{ justify-self:center }
+  .bh-logo img{ height:34px; margin-top:18px }
+  .bh-right{ display:flex; align-items:center; gap:12px; }
+  .bh-util, .bh-ask{ display:none }  /* 텍스트 유틸 숨김 */
+  .bh-menu{ gap:16px }
+}
+
+/* ④ 모바일 ↓ (≤ 640px): 새 디자인 — 슬라이드 드로어 + 아코디언 */
+@media (max-width:640px){
+  :root{ --marquee-duration: 28s; }
+  .bh-seq{ gap:28px; padding:6px 14px }
+  .bh-bar{ height:110px }
+  .bh-logo img{ height:30px; margin-top:14px }
+
+  /* 햄버거 */
+  .bh-hamburger{
+    display:inline-flex; flex-direction:column; gap:4px;
+    width:32px; height:32px; border:0; background:transparent; cursor:pointer;
+    align-items:center; justify-content:center;
+  }
+  .bh-hamburger span{
+    display:block; height:2px; width:22px; background:#111; transition:transform .22s var(--ease), opacity .22s var(--ease);
+  }
+
+  /* 데스크톱 메뉴는 모바일에서 가림 */
+  .bh-menu{ display:none }
+
+  /* 드로어 래퍼 */
+  .bh-drawer{
+    position:absolute; left:0; right:0; top:100%;
+    background:#fff; border-bottom:1px solid var(--line);
+    transform:translateY(-12px); opacity:0; pointer-events:none;
+    box-shadow:var(--shadow);
+    transition:transform .22s var(--ease), opacity .22s var(--ease);
+    will-change:transform, opacity;
+  }
+  .bh-drawer.show{
+    transform:translateY(0); opacity:1; pointer-events:auto;
+  }
+
+  .bh-drawer-head{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:12px 14px; border-bottom:1px solid var(--line);
+    position:sticky; top:0; background:rgba(255,255,255,.9);
+    backdrop-filter: blur(var(--blur));
+  }
+  .bh-drawer-title{ font-weight:700; letter-spacing:.02em }
+  .bh-mobile-close{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:32px; height:32px; border:0; background:transparent; cursor:pointer;
+  }
+
+  /* 드로어 리스트 */
+  .bh-drawer-list{
+    list-style:none; margin:0; padding:6px 8px 12px 8px;
+  }
+  .bh-drawer-item{ border-radius:12px; overflow:hidden; margin:6px 4px; background:#fff; border:1px solid var(--line) }
+  .bh-drawer-link{
+    width:100%; display:flex; align-items:center; justify-content:space-between;
+    padding:13px 12px; background:#fff; border:0; cursor:pointer; font-size:15px;
+  }
+  .bh-drawer-link:focus-visible{ outline:2px solid #111; outline-offset:2px }
+  .bh-drawer-caret{ width:16px; height:16px; transition:transform .2s var(--ease); opacity:.75 }
+  .bh-drawer-caret.open{ transform:rotate(180deg) }
+
+  /* 서브: 부드럽게 펼침 (max-height 애니메) */
+  .bh-drawer-subwrap{
+    display:flex; flex-direction:column; gap:6px;
+    padding:0 10px; overflow:hidden;
+    transition:max-height .22s var(--ease), padding .22s var(--ease), opacity .22s var(--ease);
+    opacity:.98;
+  }
+  .bh-drawer-item:not(.open) .bh-drawer-subwrap{ padding:0 10px; opacity:.6 }
+
+  .bh-drawer-sublink{
+    display:block; padding:10px 10px; border-radius:10px;
+    background:var(--pill); text-decoration:none; color:#222; font-size:14px;
+  }
+  .bh-drawer-sublink:hover{ filter:brightness(0.97) }
+
+  /* 딤 */
+  .bh-dim{
+    position:absolute; left:0; right:0; top:100%; bottom:auto; height:0;
+    background:rgba(0,0,0,.25); backdrop-filter: blur(2px);
+    border:0; margin:0; padding:0; cursor:default;
+    opacity:0; pointer-events:none; transition:opacity .22s var(--ease), height .22s var(--ease);
+  }
+  .bh-dim.show{ height:calc(100vh - 100%); opacity:1; pointer-events:auto; }
+
+  /* 검색 오버레이 축소 */
+  .bh-ol-center{ width:min(420px, 92vw); border-radius:10px; padding:14px 14px 16px }
+  .bh-ol-input{ font-size:16px }
+}
+
+/* ⑤ 소형 모바일 ↓ (≤ 420px) */
+@media (max-width:420px){
+  :root{ --marquee-duration: 24s; }
+  .container{ padding:0 12px }
+  .bh-seq{ gap:22px; padding:6px 12px }
+  .bh-bar{ height:100px }
+  .bh-logo img{ height:26px; margin-top:10px }
+  .bh-ol-center{ width:min(360px, 92vw); padding:12px 12px 14px }
+  .bh-ol-close{ right:6px; top:6px }
+}
+
+/* ====== 데스크톱 유지: 햄버거/드로어/딤 숨김 ====== */
+@media (min-width:641px){
+  .bh-hamburger, .bh-drawer, .bh-dim{ display:none !important; }
+}
+
+
+
+
+/* ===== PATCH 1: 블러 제거 (모바일 드로어/딤) ===== */
+:root { --blur: 0px; } /* 혹시 변수로 쓰일 곳 대비 */
+
+@media (max-width:640px){
+  .bh-drawer-head{
+    backdrop-filter:none !important;
+    background:#fff !important; /* 투명도 빼고 선명하게 */
+  }
+  .bh-dim{
+    backdrop-filter:none !important;
+    background:rgba(0,0,0,.28) !important; /* 살짝 어둡게만 */
+  }
+}
+
+/* ===== PATCH 2: 데스크탑에서 메뉴 정확히 가운데 정렬 ===== */
+@media (min-width:641px){
+  /* 그리드 대신 flex로 가운데 정렬 고정 */
+  .bh-nav-inner{
+    display:flex !important;
+    align-items:center;
+    justify-content:center;  /* ← 핵심 */
+    gap:0;
+  }
+  .bh-menu{
+    margin:0;               /* 양쪽 여백 오토 제거 */
+    justify-content:center; /* 내부 항목도 중앙 */
+  }
+
+  /* 모바일 전용 요소는 데스크탑에서 완전 제거 */
+  .bh-hamburger,
+  .bh-drawer,
+  .bh-dim{
+    display:none !important;
+  }
+}
+
+/* ===== FIX 1: 딤/블러 전부 제거 ===== */
+@media (max-width:640px){
+  .bh-dim{ display:none !important; }               /* 딤 자체 꺼버림 */
+  .bh-drawer-head{
+    backdrop-filter:none !important;                /* 블러 제거 */
+    background:#fff !important;
+  }
+}
+
+/* ===== FIX 2: 클릭 막는 겹침현상 해결 (z-index 고정) ===== */
+@media (max-width:640px){
+  .bh-nav{ position:relative; z-index:20; }
+  .bh-drawer{ z-index:30; }                        /* 드로어가 최상단 */
+  .bh-dim{ z-index:10; }                           /* (혹시 켜더라도) 드로어보다 아래 */
+}
+
+/* ===== FIX 3: 드로어/아코디언 상호작용 보강 ===== */
+@media (max-width:640px){
+  .bh-drawer{
+    pointer-events:auto !important;                /* 드로어에 이벤트 보장 */
+  }
+  .bh-drawer-subwrap{
+    overflow:hidden;
+    transition: max-height .22s cubic-bezier(.22,.61,.36,1),
+                padding .22s cubic-bezier(.22,.61,.36,1),
+                opacity .22s cubic-bezier(.22,.61,.36,1);
+  }
+  .bh-drawer-item.open .bh-drawer-subwrap{
+    max-height:400px;                              /* 열릴 때 높이 */
+    padding:6px 10px;                              /* 살짝 여백 */
+    opacity:1;
+  }
+  .bh-drawer-item:not(.open) .bh-drawer-subwrap{
+    max-height:0;                                  /* 닫힐 때 0 */
+    padding:0 10px;
+    opacity:.6;
+  }
+}
