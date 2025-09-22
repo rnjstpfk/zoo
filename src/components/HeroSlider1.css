@@ -1,0 +1,147 @@
+/* src/components/HeroSlider1.css */
+:root{
+  --hero-h: min(72vh, 680px);
+  --gap: 14px;
+  --txt:#111;
+  --muted:#8a8a8a;
+  --shadow: 0 10px 30px rgba(0,0,0,.12);
+  --font-main: 'Kalnia', serif;   /* ✅ Kalnia 변수 등록 */
+}
+
+.hero-slider{
+  position: relative;
+  height: var(--hero-h);
+  overflow: hidden;
+  background: #222; /* 어두운 톤 배경(이미지 로딩 전 대비) */
+  font-family: var(--font-main);   /* ✅ 기본 폰트 Kalnia */
+}
+
+.slides{ position: relative; width:100%; height:100%; }
+.slide{
+  position:absolute; inset:0;
+  background-image: var(--bg);
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transform: scale(1.02);
+  transition: opacity .6s ease, transform .8s ease;
+  will-change: transform, opacity;
+}
+.slide.is-active{
+  opacity: 1;
+  transform: scale(1);
+  z-index: 1;
+}
+
+/* ====== SHOP NOW 버튼(얇은 보더 + 투명 배경 + 지속 플립) ====== */
+/* ====== SHOP NOW 버튼(얇은 보더 + 투명 배경 + 지속 플립) ====== */
+.shop-now{
+    font-family: var(--font-main);   /* ✅ Kalnia */
+  position:absolute; left:50%; bottom:0%;
+  transform: translate(-50%,-50%);
+  display:inline-block;
+
+  /* 회전 중에도 안 사라지게 */
+  backface-visibility: visible;
+  -webkit-backface-visibility: visible; /* Safari */
+  transform-style: preserve-3d;
+  will-change: transform;
+
+  /* 스샷처럼 미니멀한 버튼 스타일 */
+  padding: 10px 18px;
+  border: 1px solid rgba(255,255,255,.9);
+  background: transparent;
+  color: #fff;
+  text-decoration:none;
+  font-weight: 600;
+  letter-spacing: .06em;
+  font-size: 12.5px;
+  text-transform: uppercase;
+
+  border-radius: 999px;
+  box-shadow: none;
+
+  /* 뒤집힘 유지 */
+  animation: flipY var(--flipDur, 2400ms) linear infinite;
+}
+.shop-now:hover{
+  background: rgba(255,255,255,.08);
+}
+
+@keyframes flipY{
+  0%   { transform: translate(-50%,-50%) rotateY(0deg); }
+  50%  { transform: translate(-50%,-50%) rotateY(180deg); }
+  100% { transform: translate(-50%,-50%) rotateY(360deg); }
+}
+
+/* ====== 왼쪽 아래 텍스트 네비(프로모션01/02) ====== */
+.slide-nav{
+  position:absolute; left:20px; bottom:18px;
+  display:flex; gap: 0px;
+  flex-wrap: wrap;
+  max-width: min(60vw, 720px);
+  z-index: 2;
+  flex-direction: column;
+}
+.nav-item{
+    font-family: var(--font-main);
+  appearance:none; border:none;
+  background: transparent;
+  color: #fff;
+  padding:6px 10px;
+  border-radius: 999px;
+  font-size:12px; cursor:pointer;
+  transition: background .2s, color .2s, border-color .2s, transform .2s;
+}
+.nav-item:hover{ transform: translateY(-1px); }
+.nav-item.is-active{
+  border-color: #fff;
+  /* background: rgba(255,255,255,.14); */
+  color:#9c9c9c;
+}
+
+/* 진행바(그대로) */
+/* .progress{
+  position:absolute; left:0; right:0; bottom:0;
+  height:3px; background: rgba(255,255,255,.15);
+  z-index: 2;
+}
+.progress > span{
+  display:block; height:100%; width:0;
+  background:#fff;
+} */
+
+/* 진행바 숨김 */
+.progress{ display:none !important; }
+.progress > span{ display:none !important; }
+
+
+/* 보조 컨트롤(그대로) */
+.ctrl{
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:space-between;
+  padding: 0 10px;
+  pointer-events: none;
+}
+.ctrl-btn{
+  pointer-events:auto;
+  width:40px; height:40px; border-radius:50%;
+  border:1px solid rgba(255,255,255,.6);
+  background: rgba(0,0,0,.15);
+  color:#fff;
+  font-size:22px; line-height:1; cursor:pointer;
+  transition: transform .2s ease, background .2s ease;
+}
+.ctrl-btn:hover{ transform: scale(1.06); background: rgba(255,255,255,.08); }
+
+/* 반응형 */
+@media (max-width: 768px){
+  :root { --hero-h: 56vh; }
+  .slide-nav{ left:12px; bottom:12px; gap:8px; }
+  .nav-item{ font-size:11.5px; padding:6px 9px; }
+}
+
+/* 모션 줄이기 */
+@media (prefers-reduced-motion: reduce){
+  .shop-now{ animation: none; }
+}
