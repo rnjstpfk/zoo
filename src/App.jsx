@@ -12,6 +12,8 @@ import CollectionGrid from "./components/CollectionGrid";
 
 
 
+import DetailePage from './components/DetailePage';
+
 
 
 
@@ -30,11 +32,11 @@ export default function App() {
       {/* <Header /> */}       {/* 헤더 버전 1 */}
       {/* <Header2 /> */}  {/* 헤더 버전 2 */}
       <Routes>
-       <Route path="/" element={<HeroSlider />} /> {/* 슬라이더 버전1 */}
+       {/* <Route path="/" element={<HeroSlider />} /> */} {/* 슬라이더 버전1 */}
 
        {/* <Route path="/" element={<ProductGrid />} /> */}  {/* 리스트 버전2 */}
        {/* <Route path="/" element={<CollectionGrid />} /> */} {/* 리스트 버전 1 */}
-       <Route
+       {/* <Route
           path="/"
           element={
             <HeroSlider1
@@ -44,7 +46,10 @@ export default function App() {
               flipDuration={2400}
             />        
           }
-        />     {/* 슬라이더 2  */}
+        /> */}     {/* 슬라이더 2  */}
+
+
+        <Route path="/" element={<DetailePage />} />    {/* 디테일 페이지1 */}
       </Routes>
       {/* <Section01 /> */} {/* 슬라이더 버전3 */}
       

@@ -1,0 +1,27 @@
+// ================================
+// File: src/styles/_variables.scss
+// ================================
+:root {
+  --container: 1100px;
+  --line: rgba(0,0,0,.08);
+  --ink: #111;
+  --muted: #6b7280;
+  --bg: #fff;
+  --radius: 16px;
+}
+
+// Typography
+$fs-12: 12px; $fs-13: 13px; $fs-14: 14px; $fs-15: 15px; $fs-16: 16px; $fs-18: 18px; $fs-20: 20px; $fs-24: 24px; $fs-28: 28px;
+$weight-regular: 400; $weight-medium: 500; $weight-semi: 600; $weight-bold: 700;
+
+@mixin clamp-line($lines: 1) {
+  display: -webkit-box; -webkit-line-clamp: $lines; -webkit-box-orient: vertical; overflow: hidden;
+}
+
+@mixin card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #fff;
+}
+
+@mixin shadow-soft { box-shadow: 0 8px 20px rgba(0,0,0,.05); }
