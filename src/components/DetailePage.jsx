@@ -55,7 +55,6 @@ function useStickyWithinParent(parentRef, gapTop = 80, lockForever = false){
       }else if(lockForever || window.scrollY < end){
         setStyle({position:"fixed", top:gapTop, left, width, zIndex:30});
       }else{
-        // 기본 동작: 부모의 바닥에서 멈춤
         setStyle({position:"absolute", top:parent.offsetHeight - box.offsetHeight, left:0, width});
       }
     };
@@ -147,7 +146,7 @@ function Gallery({images}){
   );
 }
 
-/* ───────── 사이즈 정보(스샷 동일 레이아웃) ───────── */
+/* ───────── 사이즈 정보 ───────── */
 const SIZE_TABS = ["여성용","남성용","아동용","유아","신생아"];
 
 const SIZE_TABLE = {
@@ -193,64 +192,34 @@ function SizeInfoBlock(){
     <section id="size" className="pd-info pd-size">
       <h3>사이즈 정보</h3>
 
-      {/* 입력줄 */}
       <div className="sz-inputs">
         <div className="inline">
           <div className="field with-unit">
-            <input
-              type="number"
-              inputMode="numeric"
-              placeholder="키"
-              value={cm}
-              onChange={(e)=>setCm(e.target.value)}
-            />
+            <input type="number" inputMode="numeric" placeholder="키" value={cm} onChange={(e)=>setCm(e.target.value)} />
             <span className="unit"> cm</span>
           </div>
           <div className="field with-unit">
-            <input
-              type="number"
-              inputMode="numeric"
-              placeholder="몸무게"
-              value={kg}
-              onChange={(e)=>setKg(e.target.value)}
-            />
+            <input type="number" inputMode="numeric" placeholder="몸무게" value={kg} onChange={(e)=>setKg(e.target.value)} />
             <span className="unit"> kg</span>
           </div>
           <button type="button" className="btn find">사이즈 찾기</button>
         </div>
-        <p className="tiny">
-          해당 정보는 brand 및 제품 정보 제공에 기반한 가이드로 안내드리며, 실제 정보와 크로스리스트 맞춤 매칭을 지원해드립니다.
-        </p>
+        <p className="tiny">해당 정보는 brand 및 제품 정보 제공에 기반한 가이드입니다.</p>
       </div>
 
-      {/* 탭 */}
       <div className="sz-tabs" role="tablist">
         {SIZE_TABS.map((t)=>(
-          <button
-            key={t}
-            className={`tab ${active===t?"active":""}`}
-            onClick={()=>setActive(t)}
-            role="tab"
-            aria-selected={active===t}
-          >
+          <button key={t} className={`tab ${active===t?"active":""}`} onClick={()=>setActive(t)} role="tab" aria-selected={active===t}>
             {t}
           </button>
         ))}
       </div>
 
-      {/* 표 */}
       <div className="table-wrap">
         <table className="size full">
           <thead>
             <tr>
-              <th>구분</th>
-              <th>한국</th>
-              <th>미국</th>
-              <th>일본</th>
-              <th>영국_호칭</th>
-              <th>프랑스</th>
-              <th>이탈리아</th>
-              <th>유럽</th>
+              <th>구분</th><th>한국</th><th>미국</th><th>일본</th><th>영국_호칭</th><th>프랑스</th><th>이탈리아</th><th>유럽</th>
             </tr>
           </thead>
           <tbody>
@@ -259,11 +228,6 @@ function SizeInfoBlock(){
             ))}
           </tbody>
         </table>
-
-        <ul className="foot-notes">
-          <li>인터내셔널 사이즈 표입니다. 편차(±1~3cm) 있을 수 있어요.</li>
-          <li>키즈 신발의 경우 예: NB(0~3개월) ~ Grade-School(8~13세) 등급 구분이 있으며, 브랜드 별 기준 사이즈가 상이할 수 있어요.</li>
-        </ul>
       </div>
     </section>
   );
@@ -317,7 +281,7 @@ function PurchaseBoxLite({
         <ul className="benefit-list">
           <li>카드할인 안내</li>
           <li>5만원 이상 무료배송<br /><small>(일부 상품 및 도서 산간 지역 제외)</small></li>
-          <li>도착 예정 날짜 안내 · 도착 확률 99%<br />결제 3일 이내 출고 · CJ대한통운</li>
+          <li>도착 예정 날짜 안내 · 도착 확률 99%</li>
         </ul>
       </div>
 
@@ -375,20 +339,18 @@ const RECO = Array.from({length:12}).map((_,i)=>({
 function ProductCarousel({items}){
   return (
     <div className="reco">
-      {/* 헤더 + 간격 */}
       <div className="reco-head" style={{display:"flex",justifyContent:"space-between",alignItems:"center", marginBottom:12}}>
         <h3>CONTENT NAME</h3>
         <a className="more" href="#">더보기</a>
       </div>
 
-      {/* 슬라이드: 불릿(점) 제거 */}
       <Swiper
         className="reco-swiper"
         modules={[Pagination, Autoplay]}
         slidesPerView={2}
-        spaceBetween={24}
+        spaceBetween={10}
         grabCursor
-        pagination={false}  // ✅ 점 제거
+        pagination={false}
         autoplay={{ delay: 3500, disableOnInteraction: false }}
         breakpoints={{
           0:   { slidesPerView: 1.05, spaceBetween: 14 },
@@ -437,10 +399,100 @@ function QnaBlock(){
       <div className="qna-head"><h3>상품문의</h3><a href="#" className="more">더보기</a></div>
       <label className="secret"><input type="checkbox" checked={secret} onChange={(e)=>setSecret(e.target.checked)} /> 비밀글 제외</label>
       <div className="qna-input">
-        <input type="text" placeholder="판매자에게 물어보기" value={text} onChange={(e)=>setText(e.target.value)} />
+        {/* 입력창을 숨기고 버튼만 표시 */}
+        {/* <input type="text" placeholder="판매자에게 물어보기" value={text} onChange={(e)=>setText(e.target.value)} /> */}
         <button type="button" className="qna-submit">판매자에게 문의하기</button>
       </div>
     </div>
+  );
+}
+
+/* ───────── 5개 아코디언 그룹 ───────── */
+function AccordionItem({title, children, defaultOpen=false}){
+  const [open, setOpen] = useState(defaultOpen);
+  const bodyRef = useRef(null);
+  const [maxH, setMaxH] = useState(0);
+
+  useEffect(()=>{
+    const el = bodyRef.current;
+    if(!el) return;
+    if(open){ setMaxH(el.scrollHeight); }
+    else { setMaxH(0); }
+  },[open]);
+
+  return (
+    <div className={`acc-item ${open?"open":""}`}>
+      <button type="button" className="acc-head" aria-expanded={open} onClick={()=>setOpen(v=>!v)}>
+        <span>{title}</span>
+        <span className={`chev ${open?"up":""}`} aria-hidden>▾</span>
+      </button>
+      <div ref={bodyRef} className="acc-body" style={{maxHeight: maxH}}>
+        <div className="acc-inner">
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function PolicyAccordionGroup(){
+  return (
+    <section className="policy-acc">
+      <AccordionItem title="배송 · 교환/반품 안내">
+        <h4>배송 안내</h4>
+        <ul>
+          <li>평일 오후 2시 이전 결제 시 당일 출고(예약/품절 제외).</li>
+          <li>택배사 : CJ대한통운 / 기본 3,000원 (5만원 이상 무료).</li>
+          <li>도서산간/제주 추가 운임 발생 가능.</li>
+        </ul>
+        <h4>교환/반품 안내</h4>
+        <ul>
+          <li>수령일 포함 7일 이내 신청(단순 변심 왕복 배송비 고객 부담).</li>
+          <li>착용 흔적·오염·세탁·택 제거 시 교환/반품 불가.</li>
+          <li>불량/오배송의 경우 판매자 부담.</li>
+        </ul>
+      </AccordionItem>
+
+      <AccordionItem title="교환/반품 접수하기">
+        <h4>접수 방법</h4>
+        <ul>
+          <li>마이페이지 &gt; 주문내역 &gt; 교환/반품 신청.</li>
+          <li>수거지 정보와 사유 입력 후 접수 완료.</li>
+          <li>수거 완료 후 1~3일 내 처리(영업일 기준).</li>
+        </ul>
+        <h4>반송 주소</h4>
+        <p>(17172) 경기 용인시 처인구 백암면 가창리 434 K물류센터 3층</p>
+      </AccordionItem>
+
+      <AccordionItem title="상품 고시 정보안내">
+        <h4>기본정보</h4>
+        <ul>
+          <li>제품소재 : 면 100%</li>
+          <li>제조국 : Korea</li>
+          <li>제조년월 : 2024-06</li>
+        </ul>
+        <h4>품질보증기준</h4>
+        <p>관련 법률 및 소비자분쟁해결 기준을 따릅니다.</p>
+      </AccordionItem>
+
+      <AccordionItem title="판매자 정보">
+        <ul>
+          <li>상호 : ABC 주식회사</li>
+          <li>대표자 : 홍길동</li>
+          <li>사업자등록번호 : 123-45-67890</li>
+          <li>통신판매업 : 제2024-서울강남-0000호</li>
+          <li>고객센터 : 02-1234-5678 (평일 10:00~17:00)</li>
+        </ul>
+      </AccordionItem>
+
+      <AccordionItem title="결제 정보">
+        <ul>
+          <li>무통장/카드/간편결제 지원.</li>
+          <li>카드 즉시할인/무이자 할부는 결제창에서 확인.</li>
+          <li>취소/환불은 결제 수단별 영업일 기준 처리.</li>
+        </ul>
+      </AccordionItem>
+    </section>
   );
 }
 
@@ -450,7 +502,6 @@ export default function ProductDetailPage(){
   const {style:tabsStyle, placeholderH:tabsPH} = useAffix(tabsRef, 0);
 
   const rightRef = useRef(null);
-  // ✅ 항상 고정되도록 세 번째 인자 true
   const {boxRef, style:rightStyle, spacerH} = useStickyWithinParent(rightRef, 80, true);
 
   const [active,setActive] = useState("info");
@@ -513,15 +564,21 @@ export default function ProductDetailPage(){
             <img src={washGuide} alt="세탁 안내"/>
           </section>
 
-          {/* ▶▶ 스샷 동일 사이즈 블록 */}
           <SizeInfoBlock />
 
           <section id="recommend" className="pd-info pd-reco">
             <ProductCarousel items={RECO}/>
           </section>
 
-          <section id="review" className="pd-info"><EmptyReview/></section>
-          <section id="qna" className="pd-info"><QnaBlock/></section>
+          {/* ✅ 후기 + 상품문의 + 아코디언을 한 카드에 묶음 */}
+          <section id="review" className="pd-info">
+            <div className="qna-with-policy">
+              <EmptyReview/>
+              <div id="qna" /> {/* 탭 스크롤용 앵커 유지 */}
+              <QnaBlock/>
+              <PolicyAccordionGroup/>
+            </div>
+          </section>
         </div>
 
         <div className="right-col" ref={rightRef}>

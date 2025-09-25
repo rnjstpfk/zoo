@@ -13,10 +13,10 @@ import CollectionGrid from "./components/CollectionGrid";
 
 
 import DetailePage from './components/DetailePage';
+import ProductDetailCompact from "./components/ProductDetailCompact";
 
 
-
-
+import MyPage from "./components/MyPage";
 
 
 
@@ -49,7 +49,23 @@ export default function App() {
         /> */}     {/* 슬라이더 2  */}
 
 
-        <Route path="/" element={<DetailePage />} />    {/* 디테일 페이지1 */}
+        {/* <Route path="/" element={<DetailePage />} /> */}    {/* 디테일 페이지1 */}
+        {/* <Route path="/" element={<ProductDetailCompact />} /> */}    {/* 디테일 페이지2 */}
+
+
+
+
+
+
+        <Route path="/"element={<MyPage/>}/>   {/* 마이페이지 */}
+
+
+
+
+
+
+
+
       </Routes>
       {/* <Section01 /> */} {/* 슬라이더 버전3 */}
       
