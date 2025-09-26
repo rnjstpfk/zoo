@@ -17,6 +17,7 @@ import ProductDetailCompact from "./components/ProductDetailCompact";
 
 
 import MyPage from "./components/MyPage";
+import MyOrders from "./components/MyOrders";
 
 
 
@@ -57,7 +58,8 @@ export default function App() {
 
 
 
-        <Route path="/"element={<MyPage/>}/>   {/* 마이페이지 */}
+        {/* <Route path="/"element={<MyPage/>}/> */}   {/* 마이페이지 */}
+        <Route path="/" element={<MyOrders />} />
 
 
 

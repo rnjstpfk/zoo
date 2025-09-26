@@ -1,8 +1,7 @@
 import React from "react";
 import "./MyPage.scss";
 
-/* ========= 좌측 네비 데이터 (구분선 포함) =========
-   문자열은 일반 항목, {hr:true}는 얇은 구분선 */
+/* ========= 좌측 네비 데이터 (구분선 포함) ========= */
 const NAV = [
   {
     label: "마이쇼핑",
@@ -10,34 +9,26 @@ const NAV = [
       "주문/배송조회",
       "취소/반품/교환내역",
       "거래증빙서류확인",
-      { hr: true },                  // ← 첫 번째 얇은 선
+      { hr: true },
       "장바구니",
       "좋아요",
       "재입고알림",
       "쿠폰",
       "예치금",
-      { hr: true },                  // ← 두 번째 얇은 선
+      { hr: true },
     ],
   },
   {
     label: "마이활동",
-    items: [
-      "1:1문의내역",
-      "리뷰",                       // 이미지처럼 '리뷰'가 2번째
-      "상품Q&A내역",
-    ],
+    items: ["1:1문의내역", "리뷰", "상품Q&A내역"],
   },
   {
     label: "마이정보",
-    items: [
-      "회원정보 수정",
-      "배송지/환불계좌",
-      "회원탈퇴",
-    ],
+    items: ["회원정보 수정", "배송지/환불계좌", "회원탈퇴"],
   },
 ];
 
-/* 페이지 본문에 쓰는 기본값 (이전과 동일) */
+/* 페이지 본문 기본값(동일) */
 const DEFAULT_ORDERS = { ordered: 0, paid: 0, ready: 0, shipping: 0, delivered: 1 };
 
 export default function MyPage({
@@ -48,17 +39,17 @@ export default function MyPage({
   orders = DEFAULT_ORDERS,
   likes = [], inquiries = [], productQnas = [],
 }) {
-  /* ▼▼ 햄버거 메뉴 상태 (추가) */
+  /* 햄버거 오픈 상태 */
   const [navOpen, setNavOpen] = React.useState(false);
 
-  /* ESC로 닫기 (추가) */
+  /* ESC로 닫기 */
   React.useEffect(() => {
     const onKey = (e) => e.key === "Escape" && setNavOpen(false);
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  /* 메뉴 열릴 때 바디 스크롤 잠금 (추가) */
+  /* 메뉴 열릴 때 바디 스크롤 잠금 */
   React.useEffect(() => {
     const prev = document.body.style.overflow;
     document.body.style.overflow = navOpen ? "hidden" : prev || "";
@@ -67,7 +58,7 @@ export default function MyPage({
 
   return (
     <div className="mypage--page">
-      {/* 모바일 전용 햄버거 버튼 (추가) */}
+      {/* 모바일 전용 햄버거 버튼 */}
       <button
         className="mp-hamburger"
         aria-label="사이드 메뉴 열기"
@@ -77,37 +68,30 @@ export default function MyPage({
         <span></span><span></span><span></span>
       </button>
 
-      {/* 딤 오버레이 (추가) */}
-      <div
-        className={`mp-dim ${navOpen ? "show" : ""}`}
-        onClick={() => setNavOpen(false)}
-      />
+      {/* 딤 오버레이 */}
+      <div className={`mp-dim ${navOpen ? "show" : ""}`} onClick={() => setNavOpen(false)} />
 
       <div className="mp-container">
         {/* ===== 좌측 네비 ===== */}
         <aside className={`mp-aside ${navOpen ? "open" : ""}`}>
-          {/* 모바일에서만 보이는 닫기 버튼 (추가) */}
-          <button
-            className="mp-close"
-            aria-label="사이드 메뉴 닫기"
-            onClick={() => setNavOpen(false)}
-          >
-            ×
-          </button>
+          {/* 모바일에서만 보이는 닫기 버튼 */}
+          <button className="mp-close" aria-label="사이드 메뉴 닫기" onClick={() => setNavOpen(false)}>×</button>
 
           <h1 className="mp-title">마이페이지</h1>
 
           {NAV.map((group, gi) => (
             <section className="mp-nav" key={gi}>
               <div className="nav-head">{group.label}</div>
-              <ul className="nav-list">
+
+              {/* ✅ 전역 CSS 충돌 회피: 클래스명을 mp-nav-list/mp-nav-item/mp-nav-hr 로 변경 */}
+              <ul className="mp-nav-list">
                 {group.items.map((it, i) =>
                   typeof it === "string" ? (
-                    <li className="nav-item" key={i}>
+                    <li className="mp-nav-item" key={i}>
                       <a href="#!">{it}</a>
                     </li>
                   ) : (
-                    <li className="nav-hr" key={`hr-${i}`} aria-hidden />
+                    <li className="mp-nav-hr" key={`hr-${i}`} aria-hidden />
                   )
                 )}
               </ul>

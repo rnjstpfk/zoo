@@ -7,9 +7,6 @@
 a{text-decoration: none;}
 ul{list-style: none;}
 
-
-
-
 /* 레이아웃 */
 .mypage--page{ background:var(--bg); color:var(--ink); }
 .mp-container{
@@ -18,30 +15,27 @@ ul{list-style: none;}
   @media (max-width:980px){ grid-template-columns:1fr; }
 }
 
-/* ===== 좌측 네비 (두 번째 이미지와 동일한 느낌) ===== */
+/* ===== 좌측 네비 ===== */
 .mp-title{ font-size:28px; font-weight:800; margin:6px 0 18px; margin-left: 50px;}
-
 .mp-aside .mp-nav + .mp-nav{ margin-top:22px; }
+
 .nav-head{
   font-size:12px; font-weight:800; color:#111; margin-bottom:10px; margin-left: 50px;
 }
-.nav-list{ list-style:none; display:grid; gap:5px; margin: 0; padding: 0;}
 
-.nav-item a{
-  display:block; font-size:13px; color:#2b2b2b; padding:0px 0;
-}
-.nav-item a:hover{ text-decoration:underline; }
-
-/* 얇은 구분선 */
-.nav-hr{
+/* ✅ 전역 클래스 충돌 피하기 위해 mp- 접두사 사용 */
+.mp-nav-list{ list-style:none; display:grid; gap:5px; margin-left: 50px; padding:0; }
+.mp-nav-item a{ display:block; font-size:13px; color:#2b2b2b; padding:0; }
+.mp-nav-item a:hover{ text-decoration:underline; }
+.mp-nav-hr{
   height:1px; background:var(--line);
-  margin:6px 0;            /* 줄과 줄 사이 여백 */
+  margin:6px 0;
   border-radius:1px;
 }
 
 /* ===== 상단 요약 카드 ===== */
 .mp-summary{
-  background:var(--card); border:1px solid var(--line); /* border-radius:10px; */ overflow:hidden;
+  background:var(--card); border:1px solid var(--line); overflow:hidden;
 }
 .summary-head{
   background:linear-gradient(90deg, var(--violet), #7e83c0);
@@ -127,16 +121,11 @@ ul{list-style: none;}
 }
 .pill.wait{ border-color:#ffd9b8; background:#fff4e7; color:#b06a1b; }
 
-
 .mypage--page, .mypage--page * { font-family: sans-serif !important; }
-
 
 /* =========================
    Responsive overrides ONLY
-   기존 스타일은 유지하고, 좁은 화면에서만 덮어씀
    ========================= */
-
-/* 태블릿 ~ 노트북(<=980px) */
 @media (max-width: 980px) {
   .mp-container { padding: 20px 14px 60px; }
 
@@ -160,31 +149,28 @@ ul{list-style: none;}
 
   /* 하단 리스트 패딩 축소 */
   .table-lite li { padding: 10px 12px; }
+
+  .mp-nav-list{margin-left: 20px;}
 }
 
 /* 모바일(<=640px) */
 @media (max-width: 640px) {
-  /* 그리드 1열은 기존 규칙 유지, 좌측 텍스트 크기만 줄임 */
   .mp-title { font-size: 24px; margin-left: 12px; }
   .nav-head { font-size: 11px; margin-left: 12px; }
-  .nav-item a { font-size: 12px; line-height: 1.7; }
+  .mp-nav-item a { font-size: 12px; line-height: 1.7; }
 
-  /* 상단 배너/요약 텍스트 축소 */
   .summary-head { font-size: 13px; padding: 8px 12px; }
   .summary-body { padding: 10px 12px; }
   .mini { gap: 16px; font-size: 12px; flex-wrap: wrap; }
 
-  /* 주문/배송 레일 더 컴팩트 */
   .orderbar .cell { min-width: 86px; }
   .num { font-size: 20px; }
   .lab { font-size: 10.5px; }
   .orderbar .sep { width: 14px; font-size: 16px; }
 
-  /* 좋아요 카드 간격/이미지 높이 축소 */
   .like-grid { gap: 10px; }
   .like-grid img { height: 130px; }
 
-  /* 하단 리스트 타이포 축소 */
   .table-lite .txt { font-size: 13px; }
   .table-lite time { font-size: 11px; }
 }
@@ -197,80 +183,28 @@ ul{list-style: none;}
   .orderbar .cell { min-width: 78px; }
 }
 
-
 /* =========================
-   햄버거/오프캔버스: 데스크탑 숨김, 모바일만 표시
-   (기존 스타일은 그대로, 오버라이드만 추가)
+   햄버거/오프캔버스
    ========================= */
-
-/* 기본: 데스크탑에서는 햄버거/딤/닫기 버튼 모두 숨김 */
 .mp-hamburger,
 .mp-dim,
 .mp-close { display: none; }
 
-/* 모바일/태블릿에서만 햄버거 UI 활성화 */
 @media (max-width: 980px) {
-  /* 햄버거 버튼 */
   .mp-hamburger {
-    display: inline-flex;
-    position: fixed;
-    top: 14px;
-    left: 12px;
-    z-index: 1001;
-    width: 36px;
-    height: 36px;
-    align-items: center;
-    justify-content: center;
-    background: #fff;
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    box-shadow: 0 1px 4px rgba(0,0,0,.06);
+    display:inline-flex; position:fixed; top:14px; left:12px; z-index:1001;
+    width:36px; height:36px; align-items:center; justify-content:center;
+    background:#fff; border:1px solid var(--line); border-radius:8px; box-shadow:0 1px 4px rgba(0,0,0,.06);
   }
-  .mp-hamburger span {
-    display: block;
-    width: 18px;
-    height: 2px;
-    background: #222;
-    margin: 2px 0;
-  }
+  .mp-hamburger span { display:block; width:18px; height:2px; background:#222; margin:2px 0; }
 
-  /* 오프캔버스 사이드바 */
-  .mp-aside {
-    position: fixed;
-    top: 0; left: 0;
-    height: 100vh;
-    width: 260px;
-    background: #fff;
-    border-right: 1px solid var(--line);
-    padding: 18px 12px;
-    overflow: auto;
-    transform: translateX(-100%);
-    transition: transform .25s ease;
-    z-index: 1002;
+  .mp-aside{
+    position:fixed; top:0; left:0; height:100vh; width:260px; background:#fff;
+    border-right:1px solid var(--line); padding:18px 12px; overflow:auto;
+    transform:translateX(-100%); transition:transform .25s ease; z-index:1002;
   }
-  .mp-aside.open { transform: translateX(0); }
+  .mp-aside.open{ transform:translateX(0); }
 
-  /* 딤 오버레이 */
-  .mp-dim.show {
-    display: block;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,.35);
-    z-index: 1000;
-  }
-
-  /* 닫기 버튼 (사이드바 내부 오른쪽 상단) */
-  .mp-close {
-    display: block;
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: none;
-    border: 0;
-    font-size: 24px;
-    line-height: 1;
-    cursor: pointer;
-  }
-
-  /* 콘텐츠 영역은 이미 1열로 내려가므로 그대로 사용 */
+  .mp-dim.show{ display:block; position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:1000; }
+  .mp-close{ display:block; position:absolute; top:10px; right:10px; background:none; border:0; font-size:24px; line-height:1; cursor:pointer; }
 }
